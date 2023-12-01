@@ -66,7 +66,7 @@ func (l Library) String() string {
 	for _, v := range l.storedBooks {
 		result += "\n" + v.String()
 	}
-	result += "Borrowed books are:\n"
+	result += "\nBorrowed books are:\n"
 	for _, v := range l.borrowedBooks {
 		result += "\n" + v.String()
 	}
