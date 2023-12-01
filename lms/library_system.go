@@ -77,7 +77,10 @@ func SubmitBook(l *Library) {
 func StartLms() {
 	lib := NewLibrary()
 	var option int
+	fmt.Println("--------- Welcome to lms cli -----------")
+	showOptions()
 	for {
+		
 		option = takeOption()
 
 		if option == 1 {
