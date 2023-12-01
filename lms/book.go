@@ -1,7 +1,9 @@
 package lms
 
+import "fmt"
+
 type Book struct {
-	Name string
+	Name   string
 	Author string
 }
 
@@ -10,7 +12,7 @@ type Book struct {
 // This function create new book
 func NewBook(name, author string) Book {
 	return Book{
-		Name: name,
+		Name:   name,
 		Author: author,
 	}
 }
@@ -21,4 +23,8 @@ func IsSameBook(b1, b2 Book) bool {
 		return true
 	}
 	return false
+}
+
+func (b Book) String() string {
+	return fmt.Sprintf("{Title: %s, Author: %s}", b.Name, b.Author)
 }

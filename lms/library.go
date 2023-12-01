@@ -1,6 +1,5 @@
 package lms
 
-
 type Library struct {
 	storedBooks   []Book
 	borrowedBooks []Book
@@ -20,28 +19,31 @@ func (l *Library) AddBook(name, author string) {
 	l.storedBooks = append(l.storedBooks, book)
 }
 
-func (l *Library) RemoveBook(name, author string) *Book {
-	book := NewBook(name, author)
-	for _, b := range l.storedBooks {
-		if book == b {
-			return &book
-		}
-	}
-	return nil
-}
-
-func (l *Library) BorrowBook(name, author string) *Book {
+func (l *Library) RemoveBook(name, author string) bool {
 	book := NewBook(name, author)
 	for i, b := range l.storedBooks {
 		if book == b {
 			books := l.storedBooks[:i]
 			books = append(books, l.storedBooks[i+1:len(l.storedBooks)]...)
 			l.storedBooks = books
-			l.storedBooks = append(l.storedBooks, book)
-			return &book
+			return true
 		}
 	}
-	return nil
+	return false
+}
+
+func (l *Library) BorrowBook(name, author string) bool {
+	book := NewBook(name, author)
+	for i, b := range l.storedBooks {
+		if book == b {
+			books := l.storedBooks[:i]
+			books = append(books, l.storedBooks[i+1:len(l.storedBooks)]...)
+			l.storedBooks = books
+			l.borrowedBooks = append(l.borrowedBooks, book)
+			return true
+		}
+	}
+	return false
 }
 
 func (l *Library) SubmitBook(name, author string) bool {
@@ -56,4 +58,17 @@ func (l *Library) SubmitBook(name, author string) bool {
 		}
 	}
 	return false
+}
+
+func (l Library) String() string {
+	var result string
+	result += "Stored Books are:\n"
+	for _, v := range l.storedBooks {
+		result += "\n" +v.String()
+	}
+	result += "Borrowed books are:\n"
+	for _, v := range l.borrowedBooks {
+		result += "\n" +v.String()
+	}
+	return result
 }
