@@ -64,11 +64,11 @@ func (l Library) String() string {
 	var result string
 	result += "Stored Books are:\n"
 	for _, v := range l.storedBooks {
-		result += "\n" +v.String()
+		result += "\n" + v.String()
 	}
 	result += "Borrowed books are:\n"
 	for _, v := range l.borrowedBooks {
-		result += "\n" +v.String()
+		result += "\n" + v.String()
 	}
 	return result
 }
