@@ -1,26 +1,29 @@
 package webapi
 
 import (
+	"fmt"
+	"log"
 	"net/http"
-	"strconv"
 )
 
 type WebHandler struct {
 	port    int
 	address string
-	server http.Server
+	Mux http.ServeMux
 }
 
-func NewWebHandler(port int, address string) WebHandler  {
-	addr := address + strconv.Itoa(port)
-	
+func NewWebHandler(port int) WebHandler  {
+	addr := fmt.Sprintf("localhost:%d", port)
 	return WebHandler {
 		port: port,
-		address: address,
-		server: http.Server{
-			Addr: addr,
-			Handler: http.NewServeMux(),
-			
-		},
+		address: addr,
+		Mux: *http.NewServeMux(),
 	}
+	
 }
+
+
+func (w *WebHandler) Start()  {
+	log.Println(http.ListenAndServe(w.address, &w.Mux))
+}
+

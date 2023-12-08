@@ -2,8 +2,11 @@ package lms
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/CodeOfSomnath/lms-in-go/webapi"
 )
 
 func showOptions() {
@@ -76,12 +79,34 @@ func SubmitBook(l *Library) {
 
 func StartLms() {
 	lib := NewLibrary()
+
+	web := webapi.NewWebHandler(8090)
+	web.Mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, ".\\static\\index.html")
+	})
+	web.Mux.HandleFunc("/ab", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, ".\\static\\addbook.html")
+	})
+	web.Mux.HandleFunc("/rb", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, ".\\static\\removebook.html")
+	})
+	web.Mux.HandleFunc("/bb", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, ".\\static\\borrowbook.html")
+	})
+	web.Mux.HandleFunc("/sb", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, ".\\static\\submitbook.html")
+	})
+	web.Mux.HandleFunc("/st", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, ".\\static\\showtables.html")
+	})
+	go web.Start()
+
 	LoadBooks(&lib)
 	var option int
 	fmt.Println("--------- Welcome to lms cli -----------")
 	showOptions()
 	for {
-		
+
 		option = takeOption()
 
 		SaveLms(&lib)
